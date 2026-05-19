@@ -1,10 +1,9 @@
-# human_baselines_minimal
+# human_baselines
 
-This package ships one folder per historical
-[KellerJordan/modded-nanogpt](https://github.com/KellerJordan/modded-nanogpt)
-world record from `2025-09-03_FA3` through `2026-01-19_BigramHashEmbedding`,
-plus `mean_speedups.tsv` summarizing how much wallclock each record shaves off
-the FA3 anchor when re-timed on consistent hardware.
+In this folder are a snapshot of the records from [KellerJordan/modded-nanogpt](https://github.com/KellerJordan/modded-nanogpt) - specifically the
+world records from `2025-09-03_FA3` through `2026-01-19_BigramHashEmbedding`,
+plus `mean_speedups.tsv` providing the mean wallclock speedups of each record compared to the FA3 
+baseline record when re-timed on consistent hardware.
 
 Each `<record>/` directory contains the `train_gpt.py` (and `run.sh` /
 `triton_kernels.py` where applicable) for that record.
