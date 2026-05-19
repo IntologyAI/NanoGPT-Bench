@@ -641,6 +641,38 @@ def kill(container_name: str) -> None:
         time.sleep(POLL_SEC)
 
 
+SECRET_NAME_RE: Final = re.compile(r"(KEY|TOKEN|SECRET|PASSWORD)", re.IGNORECASE)
+
+
+def redact(entry: str) -> str:
+    """Replace the value of a credential-looking ``KEY=VALUE`` env entry."""
+
+    name, sep, _ = entry.partition("=")
+    if sep != "=" or not SECRET_NAME_RE.search(name):
+        return entry
+    return f"{name}=***REDACTED***"
+
+
+def scrub(raw: str) -> str:
+    """Redact credential-looking ``Config.Env`` entries from a docker inspect dump.
+
+    ``docker inspect`` always echoes every ``-e KEY=VALUE`` we pass at create
+    time, including API keys. Persist a copy with those values replaced so the
+    run directory does not become a credential store.
+    """
+
+    payload = json.loads(raw)
+    for container in payload:
+        config = container.get("Config")
+        if not isinstance(config, dict):
+            continue
+        env = config.get("Env")
+        if not isinstance(env, list):
+            continue
+        config["Env"] = [redact(item) for item in env]
+    return json.dumps(payload, indent=4)
+
+
 def collect(container_name: str) -> Capture:
     """Collect logs and inspect data from the container before cleanup."""
 
@@ -652,7 +684,7 @@ def collect(container_name: str) -> Capture:
         capture_output=True,
     )
     return Capture(
-        inspect_json=inspect.stdout,
+        inspect_json=scrub(inspect.stdout),
         container_log=logs.stdout + logs.stderr,
     )
 

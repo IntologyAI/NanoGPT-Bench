@@ -105,9 +105,10 @@ mkdir -p "$BENCHMARK_TRACE_DIR" "$BENCHMARK_LOG_DIR" "$BENCHMARK_SUBMISSION_DIR"
 cp -f "$rules_file" "$BENCHMARK_WORKSPACE/RULES.md"
 
 export HOME="$BENCHMARK_TRACE_DIR"
-export CODEX_HOME="$BENCHMARK_TRACE_DIR/.codex"
+export CODEX_HOME="/var/lib/codex"
 
 mkdir -p "$CODEX_HOME"
+chmod 700 "$CODEX_HOME"
 
 attempt_log="$BENCHMARK_TRACE_DIR/codex-attempt.jsonl"
 session_path="$BENCHMARK_TRACE_DIR/codex-session-id"
