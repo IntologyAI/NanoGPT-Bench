@@ -1,0 +1,1 @@
+Continue to improve the training codebase rooted at `train_gpt.py` to minimize end-to-end training time while still reaching the evaluator target validation loss following the rules provided in RULES.md

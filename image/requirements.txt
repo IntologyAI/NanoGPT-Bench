@@ -1,0 +1,30 @@
+torch @ https://download.pytorch.org/whl/nightly/cu126/torch-2.9.0.dev20250718%2Bcu126-cp310-cp310-manylinux_2_28_x86_64.whl
+pytorch-triton @ https://download.pytorch.org/whl/nightly/pytorch_triton-3.4.0%2Bgit11ec6354-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl
+flash_attn_3 @ https://github.com/varunneal/flash-attention/releases/download/v3.0.0b1-alpha/flash_attn_3-3.0.0b1-cp39-abi3-linux_x86_64.whl
+muon-optimizer==0.1.0
+kernels==0.4.2
+triton==3.4.0
+numpy==2.2.6
+
+einops==0.8.1
+filelock==3.19.1
+fsspec==2025.7.0
+huggingface-hub==0.28.1
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+mpmath==1.3.0
+networkx==3.4.2
+ninja==1.13.0
+packaging==25.0
+PyYAML==6.0.2
+requests==2.32.5
+sympy==1.14.0
+tomli==2.2.1
+setuptools==80.9.0
+tqdm==4.67.1
+typing_extensions==4.15.0
+
+certifi==2025.8.3
+charset-normalizer==3.4.3
+idna==3.10
+urllib3==2.5.0

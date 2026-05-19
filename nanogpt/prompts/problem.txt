@@ -1,0 +1,11 @@
+## Problem
+
+Improve the training codebase rooted at `train_gpt.py` to minimize end-to-end training time while still reaching the evaluator target validation loss.
+
+The workspace already includes `/workspace/experiments` for in-progress candidate implementations and `/workspace/submissions` for frozen validated solutions. Implement new approaches only inside `/workspace/experiments`, with one candidate per subdirectory such as `/workspace/experiments/experiment_0`.
+
+## Workflow
+
+Validate each candidate from its experiment directory before promoting it.
+
+After your implementation shows significant improvements to the training time, make a reproducible submission for your highest performing setting by copying a validated experiment directory from `/workspace/experiments` into a new subdirectory in `/workspace/submissions` named `submission_N`, where `N` is the submission number. Do all implementation and validation work in `/workspace/experiments` first.

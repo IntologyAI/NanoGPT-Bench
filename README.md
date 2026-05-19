@@ -35,13 +35,58 @@ All baselines recover **less than 10%** of the speedup achieved by human world r
 
 Agents spent the majority of their compute on hyperparameter tuning. By contrast, ~77% of human world records introduce algorithmic changes. See the [blog post](#) for the full analysis.
 
-## Code
+## Repository Layout
 
-*Placeholder — code release coming soon.*
+```
+NanoGPT-Bench/
+├── nanogpt/                       # Host-side harness (driver, agents, prompts, launchers)
+│   ├── driver.py                  # Container launcher invoked by nanogpt/run/*.sh
+│   ├── prompts/                   # Shared agent prompts mounted into every run
+│   │   ├── RULES.md
+│   │   ├── problem.txt
+│   │   ├── local_prompt.md
+│   │   └── resume_prompt.md
+│   ├── agents/                    # Per-agent harnesses (install.sh + run.sh entrypoint)
+│   │   ├── claude/
+│   │   ├── codex/
+│   │   └── autoresearch/          # also carries its own `prompts/` overlay
+│   └── run/                       # Top-level launcher scripts (entry points for a user)
+│       ├── claude_local.sh
+│       ├── claude_autoresearch_local.sh
+│       └── codex_local.sh
+├── image/                         # Docker build context (training environment + submit validator)
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   ├── submit.sh                  # installed in-container as `submit`
+│   ├── codebase/data/             # FineWeb10B shard fetcher (baked into the image)
+│   └── tools/                     # submit validator (comparability judge + p-value retiming);
+│                                  # copied to /opt/nanogpt/tools inside the container
+└── human_baselines/               # Snapshot of historical human-record submissions (run.sh +
+                                   # train_gpt.py per record). The 2025-09-03_FA3 record is the
+                                   # comparability anchor; its serialized form is also baked
+                                   # into image/tools/baseline_code.txt.
+```
 
 ## Running the Benchmark
 
-*Placeholder — instructions for running baselines and submitting new agents coming soon.*
+1. Build the image (one-time):
+   ```bash
+   docker build -t nanogpt-bench image
+   ```
+   The build prefetches 9 FineWeb10B training shards plus the validation shard into `/workspace/data/fineweb10B/` inside the image.
+
+2. The Docker volume `nanogpt-bench-data` is mounted at `/workspace/data` at runtime. On first launch Docker auto-populates it from the shards baked into the image; subsequent runs reuse it. Override with `--data-volume` (or `BENCHMARK_DATA_VOLUME`) if you want a different volume name.
+
+3. Export the credentials your chosen agent needs and the session-hours budget, then launch one of:
+   ```bash
+   export ANTHROPIC_API_KEY=...
+   export BENCHMARK_SESSION_HOURS=24
+   bash nanogpt/run/claude_local.sh
+   # or: bash nanogpt/run/claude_autoresearch_local.sh
+   # or: OPENAI_API_KEY=... CODEX_API_KEY=$OPENAI_API_KEY bash nanogpt/run/codex_local.sh
+   ```
+
+Each launcher invokes `nanogpt/driver.py`, which copies the `2025-09-03_FA3` human record into a fresh timestamped workspace under `runs/`, mounts the `nanogpt-bench-data` volume into the container, and runs the agent's `run.sh`. The driver streams the container logs to the terminal and persists the agent's events and renderer output under the run directory. Agents validate intermediate candidates by calling `submit /workspace/submissions/submission_N`, which runs the in-container comparability + p-value check and exits `0` on success.
 
 ## How to Cite
 
