@@ -1,4 +1,4 @@
-# human_baselines
+# Human Baselines
 
 In this folder are a snapshot of the records from [KellerJordan/modded-nanogpt](https://github.com/KellerJordan/modded-nanogpt) - specifically the
 world records from `2025-09-03_FA3` through `2026-01-19_BigramHashEmbedding`,
