@@ -126,7 +126,6 @@ fi
 
 configure_codex() {
   local azure_root=""
-  local azure_resource=""
 
   if [[ -z "${OPENAI_API_KEY:-}" ]] && [[ -z "${CODEX_API_KEY:-}" ]] && [[ -n "$azure_key" ]]; then
     export AZURE_API_KEY="$azure_key"
@@ -160,6 +159,10 @@ configure_codex() {
       printf 'model = "%s"\n' "$openai_model" >> "$config_path"
     fi
     printf 'model_reasoning_effort = "%s"\n' "$codex_reasoning" >> "$config_path"
+    local api_key="${OPENAI_API_KEY:-${CODEX_API_KEY:-}}"
+    if [[ -n "$api_key" ]]; then
+      printf '%s' "$api_key" | codex login --with-api-key
+    fi
   fi
 }
 

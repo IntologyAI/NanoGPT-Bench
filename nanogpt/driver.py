@@ -468,6 +468,9 @@ def contract(spec: Spec, paths: Paths) -> tuple[Var, ...]:
         Var("BENCHMARK_SUBMISSION_DIR", "/workspace/submissions"),
         Var("BENCHMARK_EVENTS_PATH", "/workspace/agent_events.jsonl"),
         Var("BENCHMARK_FINAL_PATH", "/workspace/agent_final.txt"),
+        Var("GIT_CONFIG_COUNT", "1"),
+        Var("GIT_CONFIG_KEY_0", "safe.directory"),
+        Var("GIT_CONFIG_VALUE_0", "/workspace"),
     ]
     base.extend(spec.explicit)
     return tuple(base)

@@ -241,6 +241,30 @@ def reply(expected: str, raw: str) -> Decision:
     )
 
 
+def login(executable: str, env: dict[str, str]) -> None:
+    """Materialize codex credentials from OPENAI_API_KEY or CODEX_API_KEY.
+
+    The codex CLI no longer reads the API key from the environment at request
+    time. It only honors the auth file at ``$CODEX_HOME/auth.json`` produced by
+    ``codex login --with-api-key``, so we run the login step before every exec.
+    """
+
+    api_key = env.get("OPENAI_API_KEY") or env.get("CODEX_API_KEY")
+    if not api_key:
+        return
+    completed = subprocess.run(
+        (executable, "login", "--with-api-key"),
+        input=api_key,
+        text=True,
+        capture_output=True,
+        env=env,
+        check=False,
+    )
+    if completed.returncode != 0:
+        message = completed.stderr.strip() or completed.stdout.strip() or "codex login failed"
+        raise RuntimeError(message)
+
+
 def run_codex(prompt_text: str, model: str, reasoning: str) -> str:
     """Run Codex against one prompt and return the final message."""
 
@@ -265,6 +289,7 @@ def run_codex(prompt_text: str, model: str, reasoning: str) -> str:
         env["CODEX_HOME"] = str(codex_home)
         for item in settings.env:
             env[item.name] = item.value
+        login(executable, env)
         completed = subprocess.run(
             (
                 executable,

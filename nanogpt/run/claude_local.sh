@@ -15,6 +15,16 @@ command=(
   --agent-arg=--prompt-file=/runner/prompts/local_prompt.md
   --agent-arg=--resume-file=/runner/prompts/resume_prompt.md
   --pass-env ANTHROPIC_API_KEY
+  --pass-env OPENAI_API_KEY
+  --pass-env CODEX_API_KEY
+  --pass-env OPENAI_BASE_URL
+  --pass-env AZURE_API_KEY
+  --pass-env AZURE_OPENAI_API_KEY
+  --pass-env AZURE_API_BASE
+  --pass-env AZURE_OPENAI_BASE_URL
+  --pass-env AZURE_API_VERSION
+  --pass-env AZURE_OPENAI_DEPLOYMENT
+  --pass-env BENCHMARK_CODEX_MODEL
   --pass-env BENCHMARK_SESSION_HOURS
 )
 

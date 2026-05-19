@@ -10,8 +10,6 @@ WORKDIR /workspace
 
 COPY requirements.txt /workspace/requirements.txt
 COPY codebase/data/cached_fineweb10B.py /workspace/data/cached_fineweb10B.py
-COPY tools /opt/nanogpt/tools
-COPY submit.sh /usr/local/bin/submit
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
         build-essential ca-certificates curl git gnupg \
@@ -28,7 +26,10 @@ RUN uv pip install --python /opt/venv/bin/python \
 RUN uv pip install --python /opt/venv/bin/python -r /workspace/requirements.txt
 RUN uv pip install --python /opt/venv/bin/python "flash_attn_3 @ https://github.com/varunneal/flash-attention/releases/download/v3.0.0b1-alpha/flash_attn_3-3.0.0b1-cp39-abi3-linux_x86_64.whl"
 RUN uv pip install --python /opt/venv/bin/python --reinstall triton==3.4.0 setuptools==80.9.0
-RUN chmod 755 /usr/local/bin/submit
 RUN /opt/venv/bin/python /workspace/data/cached_fineweb10B.py 9
+
+COPY tools /opt/nanogpt/tools
+COPY submit.sh /usr/local/bin/submit
+RUN chmod 755 /usr/local/bin/submit
 
 CMD ["bash"]
