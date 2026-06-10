@@ -1,5 +1,7 @@
 # NanoGPT-Bench
 
+![Figure 1. Best training time achieved by agents over a fixed H100 GPU hour budget, starting from the human world record as of September 3rd, 2025. Progress is shown as a percentage of the speedup achieved by the January 19th, 2026 human world record. All coding agent baselines were given a budget of 512 H100 GPU hours each, and recover less than 10% of the human world record progress.](assets/figure1.png)
+
 **NanoGPT-Bench** is a benchmark for evaluating AI systems' ability to perform open-ended, long-horizon frontier ML research. It is built on top of the popular GPT-2 pretraining speedrun challenge [*NanoGPT Speedrun*](https://github.com/kellerjordan/modded-nanogpt), and measures how well autonomous coding agents can recover historical human progress on the leaderboard.
 
 ## Overview
@@ -34,8 +36,6 @@ All baselines recover **less than 10%** of the speedup achieved by human world r
 | Claude Code (Opus 4.6 Max) | 8.2% |
 
 Agents spent the majority of their compute on hyperparameter tuning. By contrast, ~77% of human world records introduce algorithmic changes. See the [blog post](#) for the full analysis.
-
-![Figure 1. Best training time achieved by agents over a fixed H100 GPU hour budget, starting from the human world record as of September 3rd, 2025. Progress is shown as a percentage of the speedup achieved by the January 19th, 2026 human world record. All coding agent baselines were given a budget of 512 H100 GPU hours each, and recover less than 10% of the human world record progress.](assets/figure1.png)
 
 ## Repository Layout
 
